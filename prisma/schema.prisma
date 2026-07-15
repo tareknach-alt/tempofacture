@@ -1,0 +1,212 @@
+// Tempofacture — Schéma Prisma
+// Provider PostgreSQL, générateur de client Rust (Prisma 7)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Authentification
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  profile FreelanceProfile?
+  clients Client[]
+  documents Document[]
+}
+
+enum Role {
+  ADMIN
+}
+
+// ---------------------------------------------------------------------------
+// Profil du freelance / organisme de formation
+// ---------------------------------------------------------------------------
+
+model FreelanceProfile {
+  id String @id @default(cuid())
+
+  // Lien propriétaire (1:1)
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Identité
+  displayName   String // Nom affiché sur les documents
+  legalName     String // Raison sociale
+  legalForm     String // Statut juridique (EI, SASU, EURL...)
+  siret         String @unique // 14 chiffres, mention obligatoire
+  apeCode       String? // Code NAF/APE
+  tvaIntra      String? // TVA intracommunautaire (FR + chiffres)
+  capital       String? // Capital social (mention obligatoire si société)
+
+  // Coordonnées
+  addressStreet String
+  addressZip    String
+  addressCity   String
+  addressCountry String @default("France")
+  email         String
+  phone         String?
+
+  logoUrl String? // URL du logo (stocké, pas en base)
+
+  // Coordonnées bancaires
+  iban String?
+  bic  String?
+  bankName String?
+
+  // Paramètres de facturation
+  paymentTermsDays Int      @default(30) // Délai de paiement en jours
+  latePenaltyRate  Decimal  @default(0) @db.Decimal(5,2) // Taux pénalités de retard (%)
+  recoveryPriceFix Decimal? @db.Decimal(10,2) // Indemnité forfaitaire de recouvrement (€)
+
+  // Mentions formation
+  isTrainingOrganism       Boolean @default(true)
+  trainingNumDeclaration   String? // Numéro de déclaration d'activité
+  trainingQualiopiCertif    Boolean @default(false)
+  trainingQualiopiDate      DateTime?
+
+  // Mentions légales libres (compléments)
+  customLegalMentions String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Clients
+// ---------------------------------------------------------------------------
+
+model Client {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Identification
+  companyName String // Nom de l'entreprise cliente (obligatoire)
+  contactName String? // Contact référent
+  siret       String // 14 chiffres (obligatoire)
+  tvaIntra    String? // TVA intra (si applicable)
+
+  // Adresse (obligatoire)
+  addressStreet String
+  addressZip    String
+  addressCity   String
+  addressCountry String @default("France")
+
+  // Contacts
+  email String // Email du contact comptabilité (obligatoire)
+  phone String?
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+
+  // Relation inverse : un client peut avoir plusieurs documents
+  documents Document[]
+}
+
+// ---------------------------------------------------------------------------
+// Documents (devis & factures & avoirs)
+// ---------------------------------------------------------------------------
+
+enum DocumentType {
+  QUOTE   // Devis
+  INVOICE // Facture
+  CREDIT  // Avoir (Phase 3)
+}
+
+enum DocumentStatus {
+  DRAFT    // Brouillon
+  ISSUED   // Émise (verrouillé — inaltérable)
+  PAID     // Payée
+  LATE     // En retard
+  CANCELLED // Annulée (avoir émis)
+}
+
+model Document {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)
+
+  type   DocumentType
+  status DocumentStatus @default(DRAFT)
+
+  // Numéro de document (ex: DEV-2026-07-001, FAC-2026-07-001, AVR-2026-07-001)
+  // Attribué de façon inaltérable au passage en statut ISSUED
+  number       String?  @unique
+  numberPrefix String?  // DEV / FAC / AVR
+  numberYear   Int?
+  numberMonth  Int?
+  numberSeq    Int?
+
+  // Lien avoir ↔ facture (Phase 3)
+  creditFromId String?
+  creditFrom   Document? @relation("CreditRelation", fields: [creditFromId], references: [id], onDelete: NoAction)
+  credits      Document[] @relation("CreditRelation")
+
+  // Dates
+  issueDate    DateTime?  // Date d'émission (verrou)
+  dueDate      DateTime?  // Date d'échéance (facture)
+  acceptedDate DateTime?  // Date d'acceptation du devis
+
+  // Notes & mentions
+  subject     String?
+  notes       String? // Notes internes (non affichées)
+  footerNote  String? //mention libre en pied de document
+  paymentTermsDays Int?  // Délai de paiement appliqué
+
+  // Totaux (immuables après émission)
+  totalHT    Decimal @default(0) @db.Decimal(12,2)
+  totalTVA   Decimal @default(0) @db.Decimal(12,2)
+  totalTTC   Decimal @default(0) @db.Decimal(12,2)
+
+  lines DocumentLine[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([clientId])
+  @@index([type, status])
+}
+
+model DocumentLine {
+  id String @id @default(cuid())
+
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  order       Int      @default(0)
+  description String
+  quantity    Decimal  @db.Decimal(10,3)
+  unitPriceHT Decimal  @db.Decimal(10,2)
+  vatRate     Decimal  @db.Decimal(5,2) // Taux de TVA en %
+
+  // Totaux de la ligne (calculés à l'émission pour inaltérabilité)
+  lineHT   Decimal @default(0) @db.Decimal(12,2)
+  lineTVA  Decimal @default(0) @db.Decimal(12,2)
+  lineTTC  Decimal @default(0) @db.Decimal(12,2)
+
+  @@index([documentId])
+}
