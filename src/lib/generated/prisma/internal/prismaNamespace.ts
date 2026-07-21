@@ -857,6 +857,7 @@ export const FreelanceProfileScalarFieldEnum = {
   trainingNumDeclaration: 'trainingNumDeclaration',
   trainingQualiopiCertif: 'trainingQualiopiCertif',
   trainingQualiopiDate: 'trainingQualiopiDate',
+  isMicroEntrepreneur: 'isMicroEntrepreneur',
   customLegalMentions: 'customLegalMentions',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

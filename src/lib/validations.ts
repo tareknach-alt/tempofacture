@@ -46,6 +46,7 @@ export const FreelanceProfileSchema = z.object({
   isTrainingOrganism: z.coerce.boolean().default(true),
   trainingNumDeclaration: z.string().optional(),
   trainingQualiopiCertif: z.coerce.boolean().default(false),
+  isMicroEntrepreneur: z.coerce.boolean().default(false),
   customLegalMentions: z.string().optional(),
 })
 

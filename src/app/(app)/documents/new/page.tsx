@@ -1,10 +1,9 @@
 import Link from 'next/link'
-import { verifySession } from '@/lib/dal'
+import { verifySession, getCurrentProfile } from '@/lib/dal'
 import { prisma } from '@/lib/db'
 import { Button } from '@/components/ui/button'
 import { DocumentForm } from '@/components/documents/document-form'
 import { createDocument } from '@/actions/documents'
-import type { ActionState } from '@/lib/validations'
 
 export const metadata = { title: 'Nouveau document — Tempofacture' }
 
@@ -17,6 +16,8 @@ export default async function NewDocumentPage({
 }) {
   const { type } = await searchParams
   const { userId } = await verifySession()
+  const profile = await getCurrentProfile()
+
   const clients = await prisma.client.findMany({
     where: { userId },
     select: { id: true, companyName: true },
@@ -45,8 +46,8 @@ export default async function NewDocumentPage({
         <DocumentForm
           clients={clients.map((c) => ({ id: c.id, companyName: c.companyName }))}
           defaultType={type === 'INVOICE' ? 'INVOICE' : 'QUOTE'}
-          state={undefined as ActionState | undefined}
-          action={createDocument as unknown as (formData: FormData) => void}
+          isMicroEntrepreneur={profile?.isMicroEntrepreneur ?? false}
+          action={createDocument}
         />
       )}
     </div>

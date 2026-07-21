@@ -395,6 +395,11 @@ function drawLegalMentions(
     )
   }
 
+  // Mention micro-entrepreneur (franchise en base de TVA — art. 293 B CGI)
+  if (profile.isMicroEntrepreneur) {
+    lines.push('TVA non applicable — art. 293 B du CGI (micro-entrepreneur).')
+  }
+
   // Coordonnées de règlement
   if (profile.iban) {
     lines.push(`Règlement par virement : IBAN ${profile.iban} — BIC ${profile.bic ?? ''}`)

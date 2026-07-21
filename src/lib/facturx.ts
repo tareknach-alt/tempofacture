@@ -187,13 +187,20 @@ export function buildFacturXXML(
 
   // Récapitulatif TVA
   for (const [rate, v] of vatBreakdown) {
-    ahts
-      .ele('ram:ApplicableTradeTax')
-      .ele('ram:CalculatedAmount').txt(fmt(v.amount)).up()
-      .ele('ram:TypeCode').txt('VAT').up()
-      .ele('ram:BasisAmount').txt(fmt(v.base)).up()
-      .ele('ram:CategoryCode').txt(rate === 0 ? 'Z' : 'S').up()
-      .ele('ram:RateApplicablePercent').txt(fmt(rate)).up()
+    const tax = ahts.ele('ram:ApplicableTradeTax')
+    tax.ele('ram:CalculatedAmount').txt(fmt(v.amount)).up()
+    tax.ele('ram:TypeCode').txt('VAT').up()
+    tax.ele('ram:BasisAmount').txt(fmt(v.base)).up()
+    if (rate === 0 && profile.isMicroEntrepreneur) {
+      tax.ele('ram:CategoryCode').txt('E').up()
+      tax
+        .ele('ram:ExemptionReason')
+        .txt('TVA non applicable, art. 293 B du CGI (micro-entrepreneur)')
+        .up()
+    } else {
+      tax.ele('ram:CategoryCode').txt(rate === 0 ? 'Z' : 'S').up()
+    }
+    tax.ele('ram:RateApplicablePercent').txt(fmt(rate)).up()
   }
 
   // Somme HT/TVA/TTC

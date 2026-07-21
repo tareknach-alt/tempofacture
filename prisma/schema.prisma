@@ -78,6 +78,9 @@ model FreelanceProfile {
   trainingQualiopiCertif    Boolean @default(false)
   trainingQualiopiDate      DateTime?
 
+  // Régime micro-entrepreneur (franchise en base de TVA — art. 293 B CGI)
+  isMicroEntrepreneur      Boolean @default(false)
+
   // Mentions légales libres (compléments)
   customLegalMentions String?
 

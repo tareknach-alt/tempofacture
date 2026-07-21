@@ -32,6 +32,7 @@ export default async function ProfilPage() {
         isTrainingOrganism: p.isTrainingOrganism,
         trainingNumDeclaration: p.trainingNumDeclaration,
         trainingQualiopiCertif: p.trainingQualiopiCertif,
+        isMicroEntrepreneur: p.isMicroEntrepreneur,
         customLegalMentions: p.customLegalMentions,
       }
     : null

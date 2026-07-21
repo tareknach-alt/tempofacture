@@ -33,6 +33,7 @@ export type ProfileInitial = {
   isTrainingOrganism: boolean
   trainingNumDeclaration: string | null
   trainingQualiopiCertif: boolean
+  isMicroEntrepreneur: boolean
   customLegalMentions: string | null
 }
 
@@ -117,6 +118,14 @@ export function ProfileForm({
           <Checkbox id="isTrainingOrganism" name="isTrainingOrganism" defaultChecked={profile?.isTrainingOrganism ?? true} label="Organisme de formation" />
           <FieldField label="N° de déclaration d&rsquo;activité" name="trainingNumDeclaration" value={profile?.trainingNumDeclaration ?? undefined} error={e?.trainingNumDeclaration} />
           <Checkbox id="trainingQualiopiCertif" name="trainingQualiopiCertif" defaultChecked={profile?.trainingQualiopiCertif ?? false} label="Certifié Qualiopi" />
+          <div className="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+            <Checkbox id="isMicroEntrepreneur" name="isMicroEntrepreneur" defaultChecked={profile?.isMicroEntrepreneur ?? false} label="Micro-entrepreneur (franchise en base de TVA — art. 293 B CGI)" />
+            <p className="mt-1 ml-6 text-xs text-muted">
+              Active si vous êtes en micro-entreprise. La mention «&nbsp;TVA non
+              applicable — art. 293 B du CGI&nbsp;» sera ajoutée automatiquement
+              sur les factures, et les lignes seront facturées HT sans TVA.
+            </p>
+          </div>
         </div>
         <div className="mt-4">
           <Label htmlFor="customLegalMentions">Mentions légales complémentaires</Label>

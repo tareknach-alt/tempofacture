@@ -34,6 +34,7 @@ export async function upsertProfile(
     isTrainingOrganism: formData.get('isTrainingOrganism') === 'on',
     trainingNumDeclaration: formData.get('trainingNumDeclaration') || undefined,
     trainingQualiopiCertif: formData.get('trainingQualiopiCertif') === 'on',
+    isMicroEntrepreneur: formData.get('isMicroEntrepreneur') === 'on',
     customLegalMentions: formData.get('customLegalMentions') || undefined,
   }
 
@@ -68,6 +69,7 @@ export async function upsertProfile(
     isTrainingOrganism: v.isTrainingOrganism,
     trainingNumDeclaration: v.trainingNumDeclaration ?? null,
     trainingQualiopiCertif: v.trainingQualiopiCertif,
+    isMicroEntrepreneur: v.isMicroEntrepreneur,
     customLegalMentions: v.customLegalMentions ?? null,
   }
 

@@ -65,6 +65,7 @@ export type FreelanceProfileMinAggregateOutputType = {
   trainingNumDeclaration: string | null
   trainingQualiopiCertif: boolean | null
   trainingQualiopiDate: Date | null
+  isMicroEntrepreneur: boolean | null
   customLegalMentions: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -97,6 +98,7 @@ export type FreelanceProfileMaxAggregateOutputType = {
   trainingNumDeclaration: string | null
   trainingQualiopiCertif: boolean | null
   trainingQualiopiDate: Date | null
+  isMicroEntrepreneur: boolean | null
   customLegalMentions: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -129,6 +131,7 @@ export type FreelanceProfileCountAggregateOutputType = {
   trainingNumDeclaration: number
   trainingQualiopiCertif: number
   trainingQualiopiDate: number
+  isMicroEntrepreneur: number
   customLegalMentions: number
   createdAt: number
   updatedAt: number
@@ -175,6 +178,7 @@ export type FreelanceProfileMinAggregateInputType = {
   trainingNumDeclaration?: true
   trainingQualiopiCertif?: true
   trainingQualiopiDate?: true
+  isMicroEntrepreneur?: true
   customLegalMentions?: true
   createdAt?: true
   updatedAt?: true
@@ -207,6 +211,7 @@ export type FreelanceProfileMaxAggregateInputType = {
   trainingNumDeclaration?: true
   trainingQualiopiCertif?: true
   trainingQualiopiDate?: true
+  isMicroEntrepreneur?: true
   customLegalMentions?: true
   createdAt?: true
   updatedAt?: true
@@ -239,6 +244,7 @@ export type FreelanceProfileCountAggregateInputType = {
   trainingNumDeclaration?: true
   trainingQualiopiCertif?: true
   trainingQualiopiDate?: true
+  isMicroEntrepreneur?: true
   customLegalMentions?: true
   createdAt?: true
   updatedAt?: true
@@ -358,6 +364,7 @@ export type FreelanceProfileGroupByOutputType = {
   trainingNumDeclaration: string | null
   trainingQualiopiCertif: boolean
   trainingQualiopiDate: Date | null
+  isMicroEntrepreneur: boolean
   customLegalMentions: string | null
   createdAt: Date
   updatedAt: Date
@@ -413,6 +420,7 @@ export type FreelanceProfileWhereInput = {
   trainingNumDeclaration?: Prisma.StringNullableFilter<"FreelanceProfile"> | string | null
   trainingQualiopiCertif?: Prisma.BoolFilter<"FreelanceProfile"> | boolean
   trainingQualiopiDate?: Prisma.DateTimeNullableFilter<"FreelanceProfile"> | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFilter<"FreelanceProfile"> | boolean
   customLegalMentions?: Prisma.StringNullableFilter<"FreelanceProfile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FreelanceProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FreelanceProfile"> | Date | string
@@ -446,6 +454,7 @@ export type FreelanceProfileOrderByWithRelationInput = {
   trainingNumDeclaration?: Prisma.SortOrderInput | Prisma.SortOrder
   trainingQualiopiCertif?: Prisma.SortOrder
   trainingQualiopiDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  isMicroEntrepreneur?: Prisma.SortOrder
   customLegalMentions?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -482,6 +491,7 @@ export type FreelanceProfileWhereUniqueInput = Prisma.AtLeast<{
   trainingNumDeclaration?: Prisma.StringNullableFilter<"FreelanceProfile"> | string | null
   trainingQualiopiCertif?: Prisma.BoolFilter<"FreelanceProfile"> | boolean
   trainingQualiopiDate?: Prisma.DateTimeNullableFilter<"FreelanceProfile"> | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFilter<"FreelanceProfile"> | boolean
   customLegalMentions?: Prisma.StringNullableFilter<"FreelanceProfile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FreelanceProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FreelanceProfile"> | Date | string
@@ -515,6 +525,7 @@ export type FreelanceProfileOrderByWithAggregationInput = {
   trainingNumDeclaration?: Prisma.SortOrderInput | Prisma.SortOrder
   trainingQualiopiCertif?: Prisma.SortOrder
   trainingQualiopiDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  isMicroEntrepreneur?: Prisma.SortOrder
   customLegalMentions?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -555,6 +566,7 @@ export type FreelanceProfileScalarWhereWithAggregatesInput = {
   trainingNumDeclaration?: Prisma.StringNullableWithAggregatesFilter<"FreelanceProfile"> | string | null
   trainingQualiopiCertif?: Prisma.BoolWithAggregatesFilter<"FreelanceProfile"> | boolean
   trainingQualiopiDate?: Prisma.DateTimeNullableWithAggregatesFilter<"FreelanceProfile"> | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolWithAggregatesFilter<"FreelanceProfile"> | boolean
   customLegalMentions?: Prisma.StringNullableWithAggregatesFilter<"FreelanceProfile"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FreelanceProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"FreelanceProfile"> | Date | string
@@ -586,6 +598,7 @@ export type FreelanceProfileCreateInput = {
   trainingNumDeclaration?: string | null
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: Date | string | null
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -619,6 +632,7 @@ export type FreelanceProfileUncheckedCreateInput = {
   trainingNumDeclaration?: string | null
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: Date | string | null
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -650,6 +664,7 @@ export type FreelanceProfileUpdateInput = {
   trainingNumDeclaration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trainingQualiopiCertif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainingQualiopiDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customLegalMentions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -683,6 +698,7 @@ export type FreelanceProfileUncheckedUpdateInput = {
   trainingNumDeclaration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trainingQualiopiCertif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainingQualiopiDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customLegalMentions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -715,6 +731,7 @@ export type FreelanceProfileCreateManyInput = {
   trainingNumDeclaration?: string | null
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: Date | string | null
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -746,6 +763,7 @@ export type FreelanceProfileUpdateManyMutationInput = {
   trainingNumDeclaration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trainingQualiopiCertif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainingQualiopiDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customLegalMentions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -778,6 +796,7 @@ export type FreelanceProfileUncheckedUpdateManyInput = {
   trainingNumDeclaration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trainingQualiopiCertif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainingQualiopiDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customLegalMentions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -815,6 +834,7 @@ export type FreelanceProfileCountOrderByAggregateInput = {
   trainingNumDeclaration?: Prisma.SortOrder
   trainingQualiopiCertif?: Prisma.SortOrder
   trainingQualiopiDate?: Prisma.SortOrder
+  isMicroEntrepreneur?: Prisma.SortOrder
   customLegalMentions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -853,6 +873,7 @@ export type FreelanceProfileMaxOrderByAggregateInput = {
   trainingNumDeclaration?: Prisma.SortOrder
   trainingQualiopiCertif?: Prisma.SortOrder
   trainingQualiopiDate?: Prisma.SortOrder
+  isMicroEntrepreneur?: Prisma.SortOrder
   customLegalMentions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -885,6 +906,7 @@ export type FreelanceProfileMinOrderByAggregateInput = {
   trainingNumDeclaration?: Prisma.SortOrder
   trainingQualiopiCertif?: Prisma.SortOrder
   trainingQualiopiDate?: Prisma.SortOrder
+  isMicroEntrepreneur?: Prisma.SortOrder
   customLegalMentions?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -990,6 +1012,7 @@ export type FreelanceProfileCreateWithoutUserInput = {
   trainingNumDeclaration?: string | null
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: Date | string | null
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1021,6 +1044,7 @@ export type FreelanceProfileUncheckedCreateWithoutUserInput = {
   trainingNumDeclaration?: string | null
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: Date | string | null
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1068,6 +1092,7 @@ export type FreelanceProfileUpdateWithoutUserInput = {
   trainingNumDeclaration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trainingQualiopiCertif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainingQualiopiDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customLegalMentions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1099,6 +1124,7 @@ export type FreelanceProfileUncheckedUpdateWithoutUserInput = {
   trainingNumDeclaration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trainingQualiopiCertif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainingQualiopiDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isMicroEntrepreneur?: Prisma.BoolFieldUpdateOperationsInput | boolean
   customLegalMentions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1133,6 +1159,7 @@ export type FreelanceProfileSelect<ExtArgs extends runtime.Types.Extensions.Inte
   trainingNumDeclaration?: boolean
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: boolean
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1166,6 +1193,7 @@ export type FreelanceProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   trainingNumDeclaration?: boolean
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: boolean
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1199,6 +1227,7 @@ export type FreelanceProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   trainingNumDeclaration?: boolean
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: boolean
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1232,12 +1261,13 @@ export type FreelanceProfileSelectScalar = {
   trainingNumDeclaration?: boolean
   trainingQualiopiCertif?: boolean
   trainingQualiopiDate?: boolean
+  isMicroEntrepreneur?: boolean
   customLegalMentions?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FreelanceProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "displayName" | "legalName" | "legalForm" | "siret" | "apeCode" | "tvaIntra" | "capital" | "addressStreet" | "addressZip" | "addressCity" | "addressCountry" | "email" | "phone" | "logoUrl" | "iban" | "bic" | "bankName" | "paymentTermsDays" | "latePenaltyRate" | "recoveryPriceFix" | "isTrainingOrganism" | "trainingNumDeclaration" | "trainingQualiopiCertif" | "trainingQualiopiDate" | "customLegalMentions" | "createdAt" | "updatedAt", ExtArgs["result"]["freelanceProfile"]>
+export type FreelanceProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "displayName" | "legalName" | "legalForm" | "siret" | "apeCode" | "tvaIntra" | "capital" | "addressStreet" | "addressZip" | "addressCity" | "addressCountry" | "email" | "phone" | "logoUrl" | "iban" | "bic" | "bankName" | "paymentTermsDays" | "latePenaltyRate" | "recoveryPriceFix" | "isTrainingOrganism" | "trainingNumDeclaration" | "trainingQualiopiCertif" | "trainingQualiopiDate" | "isMicroEntrepreneur" | "customLegalMentions" | "createdAt" | "updatedAt", ExtArgs["result"]["freelanceProfile"]>
 export type FreelanceProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -1280,6 +1310,7 @@ export type $FreelanceProfilePayload<ExtArgs extends runtime.Types.Extensions.In
     trainingNumDeclaration: string | null
     trainingQualiopiCertif: boolean
     trainingQualiopiDate: Date | null
+    isMicroEntrepreneur: boolean
     customLegalMentions: string | null
     createdAt: Date
     updatedAt: Date
@@ -1733,6 +1764,7 @@ export interface FreelanceProfileFieldRefs {
   readonly trainingNumDeclaration: Prisma.FieldRef<"FreelanceProfile", 'String'>
   readonly trainingQualiopiCertif: Prisma.FieldRef<"FreelanceProfile", 'Boolean'>
   readonly trainingQualiopiDate: Prisma.FieldRef<"FreelanceProfile", 'DateTime'>
+  readonly isMicroEntrepreneur: Prisma.FieldRef<"FreelanceProfile", 'Boolean'>
   readonly customLegalMentions: Prisma.FieldRef<"FreelanceProfile", 'String'>
   readonly createdAt: Prisma.FieldRef<"FreelanceProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"FreelanceProfile", 'DateTime'>

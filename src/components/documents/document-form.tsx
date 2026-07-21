@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useActionState, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input, Label, Textarea, FieldError, FormMessage } from '@/components/ui/field'
 import { computeLine, formatCurrencyEUR } from '@/lib/calc'
+import type { ActionState } from '@/lib/validations'
 
 type LineState = {
   key: number
@@ -14,14 +15,14 @@ type LineState = {
 }
 
 let lineCounter = 0
-function newLine(): LineState {
+function newLine(isMicroEntrepreneur = false): LineState {
   lineCounter += 1
   return {
     key: lineCounter,
     description: '',
     quantity: '1',
     unitPriceHT: '',
-    vatRate: '0',
+    vatRate: isMicroEntrepreneur ? '0' : '20',
   }
 }
 
@@ -30,16 +31,17 @@ type ClientOption = { id: string; companyName: string }
 export function DocumentForm({
   clients,
   defaultType,
-  state,
+  isMicroEntrepreneur = false,
   action,
 }: {
   clients: ClientOption[]
   defaultType: 'QUOTE' | 'INVOICE'
-  state?: { errors?: Record<string, string[]>; message?: string }
-  action: (formData: FormData) => void
+  isMicroEntrepreneur?: boolean
+  action: (state: ActionState | undefined, formData: FormData) => Promise<ActionState>
 }) {
-  const [lines, setLines] = useState<LineState[]>([newLine()])
+  const [lines, setLines] = useState<LineState[]>([newLine(isMicroEntrepreneur)])
   const [type, setType] = useState<'QUOTE' | 'INVOICE'>(defaultType)
+  const [state, formAction, pending] = useActionState(action, undefined)
 
   const updateLine = (i: number, patch: Partial<LineState>) => {
     setLines((prev) => prev.map((l, idx) => (idx === i ? { ...l, ...patch } : l)))
@@ -67,10 +69,18 @@ export function DocumentForm({
   const e = state?.errors
 
   return (
-    <form action={action} className="space-y-8">
+    <form action={formAction} className="space-y-8">
       <input type="hidden" name="type" value={type} />
 
       <FormMessage message={state?.message} />
+
+      {isMicroEntrepreneur && (
+        <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
+          <strong>Micro-entrepreneur :</strong> TVA non applicable, art. 293 B du CGI.
+          Les lignes sont facturées HT sans TVA. La mention légale sera
+          automatiquement présente sur le PDF.
+        </div>
+      )}
 
       <section className="space-y-4 rounded-xl border border-border bg-card p-6">
         <div className="flex items-center justify-between">
@@ -173,17 +183,21 @@ export function DocumentForm({
                 />
               </div>
               <div className="col-span-3 sm:col-span-1">
-                <Input
-                  name="lineVatRate[]"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  max="100"
-                  placeholder="TVA %"
-                  value={l.vatRate}
-                  onChange={(e) => updateLine(i, { vatRate: e.target.value })}
-                  required
-                />
+                {isMicroEntrepreneur ? (
+                  <input type="hidden" name="lineVatRate[]" value="0" />
+                ) : (
+                  <Input
+                    name="lineVatRate[]"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max="100"
+                    placeholder="TVA %"
+                    value={l.vatRate}
+                    onChange={(e) => updateLine(i, { vatRate: e.target.value })}
+                    required
+                  />
+                )}
               </div>
               <div className="col-span-2 sm:col-span-1 text-right text-sm tabular-nums pt-2">
                 {formatCurrencyEUR(
@@ -230,7 +244,9 @@ export function DocumentForm({
       </section>
 
       <div className="flex justify-end gap-2">
-        <Button type="submit">Enregistrer en brouillon</Button>
+        <Button type="submit" disabled={pending}>
+          {pending ? 'Enregistrement…' : 'Enregistrer en brouillon'}
+        </Button>
       </div>
     </form>
   )
