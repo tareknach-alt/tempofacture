@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { LoginForm } from '@/components/auth/login-form'
 
+export const dynamic = 'force-dynamic'
+
 export default function LoginPage() {
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-12">
