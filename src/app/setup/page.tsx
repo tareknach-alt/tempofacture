@@ -3,7 +3,6 @@ import { prisma } from '@/lib/db'
 import { SetupForm } from '@/components/auth/setup-form'
 
 export const dynamic = 'force-dynamic'
-import { SetupForm } from '@/components/auth/setup-form'
 
 export default async function SetupPage() {
   const existing = await prisma.user.count()
