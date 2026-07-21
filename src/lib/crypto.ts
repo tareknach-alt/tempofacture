@@ -12,7 +12,10 @@ import crypto from 'node:crypto'
  * un champ déjà chiffré (réversible transparent pour l'application).
  */
 
-const KEY_ENV = 'ENCRYPTION_KEY' // clé base64 de 32 octets (256 bits)
+const KEY_ENV = 'ENCRYPTION_KEY'
+
+// En build, on n'a pas lescrets → on ne jette que si on essaie vraiment de chiffrer
+const DUMMY_KEY = Buffer.alloc(32, 1)
 
 let cachedKey: Buffer | null = null
 let cachedEnv: string | null = null

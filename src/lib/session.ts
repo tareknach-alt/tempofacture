@@ -3,11 +3,14 @@ import 'server-only'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
-const secretKey = process.env.SESSION_SECRET
-if (!secretKey) {
-  throw new Error('SESSION_SECRET manquant dans les variables d\'environnement')
-}
+const secretKey = process.env.SESSION_SECRET ?? ''
 const encodedKey = new TextEncoder().encode(secretKey)
+
+function ensureSecret() {
+  if (!process.env.SESSION_SECRET) {
+    throw new Error('SESSION_SECRET manquant dans les variables d\'environnement')
+  }
+}
 
 export type SessionPayload = {
   userId: string
@@ -15,6 +18,7 @@ export type SessionPayload = {
 }
 
 export async function encrypt(payload: SessionPayload) {
+  ensureSecret()
   return new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -25,6 +29,7 @@ export async function encrypt(payload: SessionPayload) {
 export async function decrypt(
   session: string | undefined = '',
 ): Promise<SessionPayload | null> {
+  if (!process.env.SESSION_SECRET) return null
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ['HS256'],
