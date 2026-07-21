@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: tempofacture-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tempofacture
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: tempofacture
+    volumes:
+      - tempofacture-db:/var/lib/postgresql/data
+    networks:
+      - tempofacture-net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "tempofacture"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: tempofacture-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://tempofacture:${POSTGRES_PASSWORD}@db:5432/tempofacture?schema=public"
+      SESSION_SECRET: ${SESSION_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_NAME: Tempofacture
+    networks:
+      - tempofacture-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tempofacture.rule=Host(`facturation.iapourtous.tech`)"
+      - "traefik.http.routers.tempofacture.entrypoints=websecure"
+      - "traefik.http.routers.tempofacture.tls=true"
+      - "traefik.http.routers.tempofacture.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tempofacture.loadbalancer.server.port=3000"
+
+volumes:
+  tempofacture-db:
+
+networks:
+  tempofacture-net:
+    driver: bridge

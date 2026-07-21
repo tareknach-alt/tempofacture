@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+*.log
+.env*
+.DS_Store
+scripts
+tmp
+/tmp
+README.md
+AGENTS.md
+CLAUDE.md
